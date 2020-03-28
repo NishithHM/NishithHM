@@ -1,0 +1,18 @@
+.header-background {
+ display: flex;
+ flex-direction: row;
+ padding: 0px 10px;
+}
+.image-holder{
+  display: flex;
+  flex-direction: row;
+}
+@media (min-width: 320px) and (max-width: 480px) {
+  .image-holder {
+      margin: 10px 0 10px 30%;
+      flex-direction: column;
+  }
+  .header-background{
+    flex-direction: column;
+  }
+}

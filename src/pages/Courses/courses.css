@@ -1,0 +1,16 @@
+.course-container {
+  background-color: white;
+  width: 70%;
+  margin: auto;
+  padding: 20px;
+}
+.course-header{
+    padding: 10px 0;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .course-container{
+    width: 100%;
+    padding: 0;
+  }
+}

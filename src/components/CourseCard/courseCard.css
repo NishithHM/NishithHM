@@ -1,0 +1,59 @@
+.card-layout{
+    width: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    height: 150px;
+    padding: 20px 0;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+.card-layout:hover{
+    background-color:  #f2f2f2;
+    cursor: pointer;
+}
+
+.course-head{
+    flex: 2;
+}
+
+.course-body{
+    flex: 7;
+    flex-direction: column;
+}
+
+.course-footer{
+    flex: 1;
+}
+
+.sub-details{
+    color: grey;
+    padding: 10px 0;
+}
+
+.course-modal-title{
+    text-align: center;
+}
+
+.course-modal-body{
+    line-height: 25px;
+
+}
+
+.course-image{
+    height:150px;
+    width:200px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .course-image{
+        height:50px;
+        width:70px;
+    }
+    .card-layout{
+        flex-direction: column;
+        height: auto;
+        text-align: center;
+    }
+}

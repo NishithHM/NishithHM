@@ -1,0 +1,100 @@
+.auth-background{
+    display: flex;
+    flex: 1;
+    width: 100%;
+    /* background-color: lightgray;; */
+}
+
+.auth-box{
+    height: 700px;
+    background-color: white;
+    margin: auto;
+    width: 350px;
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-header{
+    flex: 3;
+}
+
+.auth-body{
+    flex: 7;
+}
+
+.login-holder{
+    text-align: center;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    height: 90%;
+    font-family: sans-serif;
+    font-size: 40px;
+}
+
+.login-title{
+    font-size: 30px;
+}
+
+.login-text{
+    font-weight: bold;
+}
+
+.login-button{
+   border: 0px;
+   border-radius: 3px !important;
+   height: 48px;
+   width: 90%;
+   background-color: #e67300 !important;
+   color:white !important;
+}
+
+.auth-form{
+    padding: 10px 0 10px 0;
+}
+
+.form-element{
+    padding: 10px 0px !important;
+    width: 100% ;
+}
+
+.auth-switch{
+    font-size: 20px;
+}
+
+.link-style{
+    color: #b35900 !important;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .auth-box{
+        height: 85%;
+        background-color: white;
+        margin: auto;
+        width: 350px;
+        border: 2px solid black;
+        border-radius: 20px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    .auth-form{
+        padding: 20px 0 0px 0;
+    }
+
+    .form-element{
+        padding: 10px 0px !important;
+    }
+
+    .login-holder{
+        font-size: 30px;
+    }
+
+    .login-title{
+        font-size: 25px;
+    }
+}
