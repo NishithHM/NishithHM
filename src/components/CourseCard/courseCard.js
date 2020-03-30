@@ -1,98 +1,138 @@
 import React, { useState } from "react";
+import { get } from "lodash";
 import { TextField, Button, Link } from "@material-ui/core";
+import { isTimeBlocked, deleteVideoCheck } from "../../utils";
 import "./courseCard.css";
 import Modal from "../Modal";
 
-const CourseCard = ({history}) => {
+const CourseCard = ({
+  history,
+  batch,
+  userDetails,
+  sendGPay,
+  videos,
+  lastPlayed,
+  videoDelete
+}) => {
   const [modal, setModal] = useState(false);
+  const [isBlockedByTime, setBlocking] = useState(false);
+  const [gPay, setGPay] = useState("");
 
-  const isRegistered = true
-  const paymentStatus = "success"
-
+  const { _id, batchName, batchTiming, description, imageUrl, price } = batch;
+  const modalTime = batchTiming.split(", ")[1];
+  const isRegistered = Boolean(userDetails);
+  const paymentStatus = get(userDetails, "paymentStatus", "Pending");
   const handleClose = () => {
     setModal(false);
   };
-
   const handleOpen = () => {
-    if (!modal) setModal(true);
-
-    if(isRegistered && paymentStatus==="success"){
-      history.push('/videos')
+    const timeBlock = isTimeBlocked(batchTiming);
+    const [deleteVideo, seek] = deleteVideoCheck(lastPlayed, batchTiming);
+    console.log(seek * 60);
+    if (deleteVideo) {
+      videoDelete(videos[0]);
+    } else {
+      setBlocking(timeBlock);
+      if (!modal) setModal(true);
+      if (
+        isRegistered &&
+        paymentStatus === "Success" &&
+        !timeBlock &&
+        !deleteVideo
+      ) {
+        if (videos[0]) {
+          console.log(seek);
+          sessionStorage.setItem("video", videos[0]);
+          history.push({
+            pathname: "/videos",
+            state: { video: videos[0], seek }
+          });
+        }
+      }
     }
   };
 
+  const onInputChange = e => {
+    setGPay(e.target.value);
+  };
 
   return (
-    <div className="card-layout" onClick={() => handleOpen()}>
+    <div className="card-layout" onClick={() => handleOpen()} key={_id}>
       <div className="course-head">
-        <img
-          src="https://i.udemycdn.com/course/240x135/625204_436a_2.jpg"
-          className="course-image"
-          alt="lathashekhar"
-        />
+        <img src={imageUrl} className="course-image" alt="lathashekhar" />
       </div>
       <div className="course-body">
         <div className="course-details">
-          <h3>The Web Developer Bootcamp</h3>
+          <h3>{batchName}</h3>
           <div className="sub-details">
-            <span>
-              {" "}
-              &#x2022; 16 Lectures.&emsp;&#x2022; Morning 7:00AM to 8:00AM Mon-Thu
-            </span>
+            <span>{batchTiming}</span>
           </div>
           <div className="sub-details">
-            <span>
-              The only course you need to learn web development - HTML, CSS, JS,
-              Node, and More!
-            </span>
+            <span>{description}</span>
           </div>
         </div>
       </div>
       <div className="course-footer">
-        <h3>₹710</h3>
-        {!isRegistered && <p>Register Now</p> }
-        {isRegistered && paymentStatus==='pending' && <p>Registration Processing</p>}
-        {isRegistered && paymentStatus==="success" && <p>Payment Verified</p>}
+        <h3>₹{price}</h3>
+        {!isRegistered && <p>Register Now</p>}
+        {isRegistered && paymentStatus === "Pending" && (
+          <p>Registration Processing</p>
+        )}
+        {isRegistered && paymentStatus === "Success" && <p>Payment Verified</p>}
       </div>
       <Modal open={modal} handleClose={handleClose}>
         <div>
           <div className="course-modal-title">
-            <h2>The Web Developer Bootcamp</h2>
+            <h2>{batchName}</h2>
           </div>
           <div className="course-modal-body">
-          {!isRegistered && 
-            <>
-            <p>
-              This Course is Open for Registration, Please process Payment of
-              ₹500 through Google Pay to this number 9448983383 and click on
-              Register filling the Gpay reference id
-            </p>
-            <TextField
-              className="form-element"
-              id="gpayReferenceId"
-              label="Gpay Reference id"
-              // onChange={this.onInputChange}
-              type="text"
-              // value={confirmPassword}
-              // error={validateForm && !confirmPassword}
-              // helperText={validateForm && !confirmPassword && "Mandatory"}
-            />
-            <Button
-              className="login-button"
-              // onClick={() => this.authUser()}
-            >
-              Register
-            </Button>
-          </>
-          }
-          {isRegistered && paymentStatus==='pending' &&
-            <>
-            <p>
-              Your Payment is being verified, please contact 9448983383 for more details
-            </p>
-            
-          </>
-          }
+            {!isRegistered && (
+              <>
+                <p>
+                  This Course is Open for Registration, Please process Payment
+                  of ₹{price} through Google Pay to this number 9448983383 and
+                  click on Register filling the Gpay reference id
+                </p>
+                <TextField
+                  className="form-element"
+                  id="gpayReferenceId"
+                  label="Gpay Reference id"
+                  onChange={e => onInputChange(e)}
+                  type="text"
+                  value={gPay}
+                  error={!gPay}
+                  helperText={!gPay && "Mandatory"}
+                />
+                <Button
+                  className="login-button"
+                  onClick={() => sendGPay(_id, gPay)}
+                  disabled={!gPay}
+                >
+                  Register
+                </Button>
+              </>
+            )}
+            {isRegistered && paymentStatus === "Pending" && (
+              <>
+                <p>
+                  Your Payment is being verified, please contact 9448983383 for
+                  more details
+                </p>
+              </>
+            )}
+            {isRegistered && paymentStatus === "Success" && isBlockedByTime && (
+              <>
+                <p>{`You have chosen a morning batch timings which is ${modalTime}`}</p>
+              </>
+            )}
+            {isRegistered &&
+              paymentStatus === "Success" &&
+              !isBlockedByTime &&
+              videos[0] === undefined && (
+                <>
+                  <p>You have completed this course</p>
+                </>
+              )}
           </div>
         </div>
       </Modal>

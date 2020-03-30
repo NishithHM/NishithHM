@@ -1,0 +1,17 @@
+.admin-container {
+    background-color: white;
+    width: 70%;
+    margin: auto;
+    padding: 20px;
+  }
+
+  .admin-table{
+      min-height: 650px;
+  }
+  
+  @media (min-width: 320px) and (max-width: 480px) {
+    .admin-container{
+      width: 100%;
+      padding: 0;
+    }
+  }

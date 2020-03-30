@@ -1,0 +1,16 @@
+export const API_IN_PROGRESS = "API_IN_PROGRESS";
+export const API_DONE = "API_DONE";
+export const LOGIN_PASS = "LOGIN_PASS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const UPDATE_PASS = "UPDATE_PASS";
+export const UPDATE_FAIL = "UPDATE_FAIL";
+export const SIGN_UP_PASS = "SIGN_UP_PASS";
+export const SIGN_UP_FAIL = "SIGN_UP_FAIL";
+export const GET_BATCH_PASS = "GET_BATCH_PASS";
+export const GET_BATCH_FAIL = "GET_BATCH_FAIL";
+export const USER_BATCH_PASS = "USER_BATCH_PASS";
+export const USER_BATCH_FAIL = "USER_BATCH_FAIL";
+export const USER_LIST_PASS = "USER_LIST_PASS";
+export const USER_LIST_FAIL = "USER_LIST_FAIL";
+export const USER_PAYMENT_PASS = "USER_PAYMENT_PASS";
+export const USER_PAYMENT_FAIL = "USER_PAYMENT_FAIL"

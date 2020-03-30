@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { TextField, Button, Link } from "@material-ui/core";
 import "./auth.css";
+import { login, signUp } from "../../redux/actions";
 
 class Auth extends Component {
   constructor(props) {
@@ -12,9 +14,43 @@ class Auth extends Component {
       phoneNumber: "",
       password: "",
       confirmPassword: "",
-      validateForm: false
+      validateForm: false,
+      errorMsg: ""
     };
   }
+
+  componentDidMount(){
+    sessionStorage.clear()
+  }
+
+  componentDidUpdate = prevprops => {
+    const { loginError, signUp } = this.props;
+
+    if (prevprops.loginError !== loginError) {
+      loginError
+        ? this.setState({
+            errorMsg:
+              "Check Username and password or logout from other devices and try again"
+          })
+        : this.setState({
+            errorMsg: ""
+          });
+    }
+
+    if (prevprops.signUp !== signUp) {
+      signUp ? this.setState({
+        isSignIn: true,
+        password: "",
+        confirmPassword: "",
+        place: "",
+        name: "",
+        validateForm: false,
+        errorMsg: "Sign up Successful Login now"
+      }) : this.setState({
+        errorMsg:"Sign in Failed, User may already Registered, contact admin 9448983383"
+      })
+    }
+  };
 
   onInputChange = ({ target: { id, value } }) => {
     this.setState({
@@ -28,23 +64,39 @@ class Auth extends Component {
       phoneNumber,
       password,
       place,
-      confirmPassword
+      confirmPassword,
+      name
     } = this.state;
 
-    const {history} = this.props
+    const { history } = this.props;
 
     if (isSignIn) {
-      console.log(phoneNumber, password);
+      this.props.dispatch(login(phoneNumber, password, history));
     } else {
-      console.log(phoneNumber, place, password, confirmPassword);
+      if (phoneNumber.split("").length !== 10)
+        this.setState({
+          errorMsg: "Phone Number should be 10 Digits"
+        });
+      if (password !== confirmPassword)
+        this.setState({
+          errorMsg: "Password Mismatch"
+        });
+      if (name === "" || place === "" || password === "")
+        this.setState({
+          errorMsg: "Some Fields are Empty"
+        });
+      else {
+        this.props.dispatch(signUp(phoneNumber, password, name, place));
+        this.setState({
+          errorMsg: ""
+        });
+      }
     }
 
     this.setState({
       validateForm: true
     });
 
-    // history.push('/courses')
-    
   };
 
   render() {
@@ -55,15 +107,23 @@ class Auth extends Component {
       phoneNumber,
       password,
       confirmPassword,
-      validateForm
+      validateForm,
+      errorMsg
     } = this.state;
+    const { loading, isLoggedIn, loginError } = this.props;
     const phoneRegex = /^[2-9]{2}[0-9]{8}$/;
     const phoneNumberHelper =
       phoneNumber && !phoneRegex.test(phoneNumber)
         ? "Number Not Valid "
         : "Mandatory";
     return (
-      <div className="auth-background">
+      <div
+        className="auth-background"
+        style={{
+          opacity: loading ? 0.5 : 1,
+          pointerEvents: loading ? "none" : "all"
+        }}
+      >
         <div className="auth-box">
           <div className="auth-header">
             <div className="login-holder">
@@ -108,8 +168,15 @@ class Auth extends Component {
                 onChange={this.onInputChange}
                 type="number"
                 value={phoneNumber}
-                error={validateForm && (!phoneNumber || !phoneRegex.test(phoneNumber))}
-                helperText={(validateForm && (!phoneNumber && !phoneRegex.test(phoneNumber)) ) ? phoneNumberHelper : ''}
+                error={
+                  validateForm &&
+                  (!phoneNumber || !phoneRegex.test(phoneNumber))
+                }
+                helperText={
+                  validateForm && !phoneNumber && !phoneRegex.test(phoneNumber)
+                    ? phoneNumberHelper
+                    : ""
+                }
               />
               <TextField
                 className="form-element"
@@ -141,18 +208,21 @@ class Auth extends Component {
                   {isSignIn ? "Login" : "Sign Up"}
                 </Button>
               </div>
+              <br />
+              <span style={{ color: "red" }}>{errorMsg}</span>
             </form>
             {isSignIn ? (
               <p className="auth-switch">
                 Don't Have an Account?{" "}
                 <span>
                   <Link
-                    className='link-style'
+                    className="link-style"
                     onClick={() =>
                       this.setState({
                         isSignIn: false,
                         password: "",
-                        validateForm: false
+                        validateForm: false,
+                        errorMsg: ""
                       })
                     }
                   >
@@ -165,7 +235,7 @@ class Auth extends Component {
                 Already Have an Account?{" "}
                 <span>
                   <Link
-                    className='link-style'
+                    className="link-style"
                     onClick={() =>
                       this.setState({
                         isSignIn: true,
@@ -173,7 +243,8 @@ class Auth extends Component {
                         confirmPassword: "",
                         place: "",
                         name: "",
-                        validateForm: false
+                        validateForm: false,
+                        errorMsg: ""
                       })
                     }
                   >
@@ -189,4 +260,13 @@ class Auth extends Component {
   }
 }
 
-export default Auth;
+const mapStateToProps = state => {
+  return {
+    loading: state.promiseReducer.loading,
+    isLoggedIn: state.authReducer.isLoggedIn,
+    loginError: state.authReducer.loginError,
+    signUp: state.authReducer.signUp
+  };
+};
+
+export default connect(mapStateToProps)(Auth);
