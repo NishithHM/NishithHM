@@ -8,13 +8,20 @@ const Header = props => (
     <div className="image-holder">
       <img src={Logo} width="150" height="100" />
     </div>
-    <h4>
-      Nithya Sanjeevini Yoga Prathishtana No 63, Lic Housing Layout,
-      Rajarajeshwari Nagar, Bengaluru – 560098
-    </h4>
+    <div style={{ flexDirection: "column" }}>
+      <h2>Nithya Sanjeevini Yoga Prathishtana</h2>
+      <h4>
+        No 63, Lic Housing Layout, Rajarajeshwari Nagar, Bengaluru – 560098
+      </h4>
+    </div>
     {props.location.pathname !== "/" ? (
-      <div style={{margin: "10px 10px 0 auto", width:"100px"}}>
-        <Button className="login-button" onClick={()=> props.history.push('/')}>Log Out</Button>
+      <div style={{ margin: "10px 10px 0 auto", width: "100px" }}>
+        <Button
+          className="login-button"
+          onClick={() => props.history.push("/")}
+        >
+          Log Out
+        </Button>
       </div>
     ) : null}
   </div>

@@ -51,8 +51,6 @@ class Admin extends Component {
   render() {
     const { loading, userList, listError, batchData, loginDetails } = this.props;
     const userBatch = arrayReformat(userList, batchData);
-    console.log(userBatch)
-    console.log(userList)
     return (
       <div
         className="admin-container"

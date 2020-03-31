@@ -47,7 +47,7 @@ class Auth extends Component {
         validateForm: false,
         errorMsg: "Sign up Successful Login now"
       }) : this.setState({
-        errorMsg:"Sign in Failed, User may already Registered, contact admin 9448983383"
+        errorMsg:"Sign in Failed, User may already Registered, contact admin 8147451256"
       })
     }
   };

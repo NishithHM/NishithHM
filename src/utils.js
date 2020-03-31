@@ -54,14 +54,24 @@ export const arrayReformat = (list, batchList) => {
   return batchArray;
 };
 
-export const deleteVideoCheck = (lastPlayed, data) => {
+export const deleteVideoCheck = (lastPlayed, data, match) => {
   const now = moment(new Date());
   const [start, stop] = data.split(", ")[1].split("to ");
   const { hr: stoptHr, min: stopMin } = getHourMin(stop);
+  const { hr: startHr, min: startMin } = getHourMin(start);
+  const today = new Date();
+  let courseStart = new Date()
+  courseStart.setHours(startHr);
+  courseStart.setMinutes(startMin);
+  courseStart.setFullYear(today.getFullYear());
+  courseStart.setMonth(today.getMonth());
+  courseStart.setDate(today.getDate());
+  courseStart.setSeconds("00");
+  courseStart.setMilliseconds("00");
+  courseStart = moment(new Date(courseStart));
   let courseEnd = new Date();
   courseEnd.setHours(stoptHr);
   courseEnd.setMinutes(stopMin);
-  const today = new Date();
   courseEnd.setFullYear(today.getFullYear());
   courseEnd.setMonth(today.getMonth());
   courseEnd.setDate(today.getDate());
@@ -69,14 +79,25 @@ export const deleteVideoCheck = (lastPlayed, data) => {
   courseEnd.setMilliseconds("00");
   courseEnd = moment(new Date(courseEnd));
   const nowAndCourseEnd = moment.duration(courseEnd.diff(now)).asMinutes();
-  console.log(nowAndCourseEnd);
+  const nowAndCourseStart = moment.duration(courseStart.diff(now)).asMinutes();
   if (lastPlayed) {
-    if (nowAndCourseEnd > 0) {
-      return [false, (60 -nowAndCourseEnd)*60];
+    if (nowAndCourseEnd > 0 && nowAndCourseStart < 0) {
+      return [false, (50 -nowAndCourseEnd)*60];
     } else {
-      return [true, 0];
+      if(match){
+        return [true, 0]
+      }
+      else{
+        return [false,0]
+      }
+      
     }
   } else {
-    return [false, (60 - nowAndCourseEnd)*60];
+    if(nowAndCourseEnd>0 && nowAndCourseStart<0){
+    return [false, (50 -nowAndCourseEnd)*60];
+    }
+    else {
+      return [false, 0]
+    }
   }
 };

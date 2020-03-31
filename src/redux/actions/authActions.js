@@ -115,7 +115,6 @@ export const userUpdate = (phone, history) => {
 };
 
 export const updatePlayDateAndTime = (lastPlayed, phone) => {
-    console.log(lastPlayed)
   return dispatch => {
     putService("/user", { lastPlayed, phone }).then(res=>{
         dispatch(userUpdate(phone))

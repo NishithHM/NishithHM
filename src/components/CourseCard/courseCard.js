@@ -22,13 +22,13 @@ const CourseCard = ({
   const modalTime = batchTiming.split(", ")[1];
   const isRegistered = Boolean(userDetails);
   const paymentStatus = get(userDetails, "paymentStatus", "Pending");
+  const batchId = get(userDetails,"batchId","0")
   const handleClose = () => {
     setModal(false);
   };
   const handleOpen = () => {
-    const timeBlock = isTimeBlocked(batchTiming);
-    const [deleteVideo, seek] = deleteVideoCheck(lastPlayed, batchTiming);
-    console.log(seek * 60);
+    const [deleteVideo, seek] = deleteVideoCheck(lastPlayed, batchTiming, _id === batchId);
+    const timeBlock = !(seek>0 && seek <50*60);
     if (deleteVideo) {
       videoDelete(videos[0]);
     } else {
@@ -40,8 +40,7 @@ const CourseCard = ({
         !timeBlock &&
         !deleteVideo
       ) {
-        if (videos[0]) {
-          console.log(seek);
+        if (videos[0] && seek<50*60) {
           sessionStorage.setItem("video", videos[0]);
           history.push({
             pathname: "/videos",
@@ -90,7 +89,7 @@ const CourseCard = ({
               <>
                 <p>
                   This Course is Open for Registration, Please process Payment
-                  of ₹{price} through Google Pay to this number 9448983383 and
+                  of ₹{price} through Google Pay to this number 8147451256 and
                   click on Register filling the Gpay reference id
                 </p>
                 <TextField
@@ -115,7 +114,7 @@ const CourseCard = ({
             {isRegistered && paymentStatus === "Pending" && (
               <>
                 <p>
-                  Your Payment is being verified, please contact 9448983383 for
+                  Your Payment is being verified, please contact 8147451256 for
                   more details
                 </p>
               </>

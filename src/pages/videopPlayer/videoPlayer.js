@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import { connect } from "react-redux";
 import "./videoplayer.css";
 import { updatePlayDateAndTime, deleteVideo } from "../../redux/actions";
-import {get} from 'lodash'
+import { get } from "lodash";
 
 class VideoPlayer extends Component {
   constructor(props) {
@@ -11,54 +11,60 @@ class VideoPlayer extends Component {
     this.player = "";
   }
 
-  seekTo = (seek) => {
-    console.log(seek)
+  seekTo = seek => {
     this.player.seekTo(seek, "seconds");
   };
 
   componentDidMount() {
     const { location, history } = this.props;
-    const seek = get(location,"state.seek",null)
-    const video = get(location,"state.video",sessionStorage.getItem("video"))
+    const seek = get(location, "state.seek", 0);
+    const video = get(location, "state.video", sessionStorage.getItem("video"));
     if (!(video || sessionStorage.getItem("video"))) {
       history.push("/");
       sessionStorage.clear();
     }
-    if(seek===null){
-      history.push('/courses')
+    if (seek === 0) {
+      history.push("/courses");
     }
-
-
   }
 
-
   onStart = () => {
-    const today = new Date();   
-    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    const time = today.getHours() + ":" + today.getMinutes()
-    const phone = sessionStorage.getItem('phone')
-    this.props.dispatch(updatePlayDateAndTime(today, phone))
+    const today = new Date();
+    const date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
+    const time = today.getHours() + ":" + today.getMinutes();
+    const phone = sessionStorage.getItem("phone");
+    this.props.dispatch(updatePlayDateAndTime(today, phone));
   };
 
   onEnd = () => {
-   const {dispatch, location, history} =  this.props
-   const video = get(location,"state.video",sessionStorage.getItem("video"))
-   dispatch(deleteVideo(video, true, history))
+    const { dispatch, location, history } = this.props;
+    const video = get(location, "state.video", sessionStorage.getItem("video"));
+    dispatch(deleteVideo(video, true, history));
   };
 
   render() {
     const { location } = this.props;
-    const video = get(location,"state.video",sessionStorage.getItem("video"))
-    const seek = get(location,"state.seek",0)
+    const video = get(location, "state.video", sessionStorage.getItem("video"));
+    const seek = get(location, "state.seek", 0);
+    console.log(seek)
     return (
-      <ReactPlayer
-        ref={ref => (this.player = ref)}
-        url={video}
-        playing
-        onReady={() => this.seekTo(seek)}
-        onStart={() => this.onStart()}
-        onEnded={() => this.onEnd()}
-      />
+      <div style={{ pointerEvents: "none" }}>
+        <ReactPlayer
+          ref={ref => (this.player = ref)}
+          url={video.trim()}
+          playing
+          onReady={() => this.seekTo(seek)}
+          onStart={() => this.onStart()}
+          onEnded={() => this.onEnd()}
+          height={window.outerHeight}
+          width={window.outerWidth}
+        />
+      </div>
     );
   }
 }
