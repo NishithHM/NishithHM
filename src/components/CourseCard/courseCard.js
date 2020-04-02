@@ -121,7 +121,7 @@ const CourseCard = ({
             )}
             {isRegistered && paymentStatus === "Success" && isBlockedByTime && (
               <>
-                <p>{`You have chosen a morning batch timings which is ${modalTime}`}</p>
+                <p>{`You have chosen batch timings which is ${modalTime}`}</p>
               </>
             )}
             {isRegistered &&
