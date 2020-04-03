@@ -12,7 +12,11 @@ import {
   Button
 } from "@material-ui/core";
 import "./admin.css";
-import { getUserList, getBatchData, updateUserPayment } from "../../redux/actions";
+import {
+  getUserList,
+  getBatchData,
+  updateUserPayment
+} from "../../redux/actions";
 import { arrayReformat } from "../../utils";
 
 class Admin extends Component {
@@ -22,35 +26,41 @@ class Admin extends Component {
     dispatch(getBatchData());
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     const { loginDetails, history } = this.props;
 
-    if(loginDetails.role==='user'){
-        history.push('/')
-        sessionStorage.clear()
+    if (loginDetails.role === "user") {
+      history.push("/");
+      sessionStorage.clear();
     }
   }
 
-  updatePayment=(phone, batchId, paymentStatus)=>{
-      const {userList, dispatch} = this.props
-     const currentUser = userList.filter(user=> user.phone ===phone)
-     const batchDetails = []
-     currentUser[0].batchDetails.map(data=>{
-       if(data.batchId===batchId){
-         paymentStatus === "Pending" ? batchDetails.push({...data, paymentStatus:"Success"})
-         :
-         batchDetails.push({...data, paymentStatus:"Pending"})
-       }
-       else{
-         batchDetails.push({...data})
-       }
-     })
-     dispatch(updateUserPayment(phone, true, batchDetails))
-  }
+  updatePayment = (phone, batchId, paymentStatus) => {
+    const { userList, dispatch } = this.props;
+    const currentUser = userList.filter(user => user.phone === phone);
+    const batchDetails = [];
+    currentUser[0].batchDetails.map(data => {
+      if (data.batchId === batchId) {
+        paymentStatus === "Pending"
+          ? batchDetails.push({ ...data, paymentStatus: "Success" })
+          : batchDetails.push({ ...data, paymentStatus: "Pending" });
+      } else {
+        batchDetails.push({ ...data });
+      }
+    });
+    dispatch(updateUserPayment(phone, true, batchDetails));
+  };
 
   render() {
-    const { loading, userList, listError, batchData, loginDetails } = this.props;
+    const {
+      loading,
+      userList,
+      listError,
+      batchData,
+      loginDetails
+    } = this.props;
     const userBatch = arrayReformat(userList, batchData);
+    
     return (
       <div
         className="admin-container"
@@ -123,7 +133,12 @@ class Admin extends Component {
                     </TableCell>
                     <TableCell align="left">
                       {paymentStatus && (
-                        <Button className="login-button" onClick={()=> this.updatePayment(phone, batchId,paymentStatus)}>
+                        <Button
+                          className="login-button"
+                          onClick={() =>
+                            this.updatePayment(phone, batchId, paymentStatus)
+                          }
+                        >
                           {paymentStatus === "Pending"
                             ? "Approve"
                             : "Disapprove"}

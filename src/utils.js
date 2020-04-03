@@ -81,7 +81,7 @@ export const deleteVideoCheck = (lastPlayed, data, match) => {
   const nowAndCourseEnd = moment.duration(courseEnd.diff(now)).asMinutes();
   const nowAndCourseStart = moment.duration(courseStart.diff(now)).asMinutes();
   if (lastPlayed) {
-    if (nowAndCourseEnd > 0 && nowAndCourseStart < 0) {
+    if (nowAndCourseEnd > 0 && nowAndCourseStart < 0 && today.getDay() < 5) {
       return [false, (50 -nowAndCourseEnd)*60];
     } else {
       if(match){
@@ -93,7 +93,7 @@ export const deleteVideoCheck = (lastPlayed, data, match) => {
       
     }
   } else {
-    if(nowAndCourseEnd>0 && nowAndCourseStart<0){
+    if(nowAndCourseEnd>0 && nowAndCourseStart<0 && today.getDay() < 5){
     return [false, (50 -nowAndCourseEnd)*60];
     }
     else {
