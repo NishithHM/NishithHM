@@ -27,7 +27,7 @@ const CourseCard = ({
     setModal(false);
   };
   const handleOpen = () => {
-    const [deleteVideo, seek] = deleteVideoCheck(lastPlayed, batchTiming, _id === batchId);
+    const [deleteVideo, seek] = deleteVideoCheck(lastPlayed, (batchTiming, _id === batchId && paymentStatus==='Success'));
     const timeBlock = !(seek>0 && seek <50*60);
     if (deleteVideo) {
       videoDelete(videos[0]);
