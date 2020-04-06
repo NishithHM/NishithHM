@@ -1,14 +1,23 @@
 import React, { Component } from "react";
 import ReactPlayer from "react-player";
 import { connect } from "react-redux";
+import Fullscreen from "react-full-screen";
 import "./videoplayer.css";
 import { updatePlayDateAndTime, deleteVideo } from "../../redux/actions";
 import { get } from "lodash";
+import { Button } from "@material-ui/core";
 
 class VideoPlayer extends Component {
   constructor(props) {
     super(props);
     this.player = "";
+    this.state = {
+      isFull: false,
+    };
+  }
+
+  goFull = () => {
+    this.setState({ isFull: true });
   }
 
   seekTo = seek => {
@@ -51,9 +60,19 @@ class VideoPlayer extends Component {
     const { location } = this.props;
     const video = get(location, "state.video", sessionStorage.getItem("video"));
     const seek = get(location, "state.seek", 0);
-    console.log(seek)
     return (
+      <div>
+      <Button
+          className="fullscreen-button"
+          onClick={() => this.goFull()}
+        >
+          Go Full Screen
+        </Button>
       <div style={{ pointerEvents: "none" }}>
+      <Fullscreen
+          enabled={this.state.isFull}
+          onChange={isFull => this.setState({isFull})}
+        >
         <ReactPlayer
           ref={ref => (this.player = ref)}
           url={video.trim()}
@@ -64,6 +83,8 @@ class VideoPlayer extends Component {
           height={window.outerHeight}
           width={window.outerWidth}
         />
+        </Fullscreen>
+      </div>
       </div>
     );
   }

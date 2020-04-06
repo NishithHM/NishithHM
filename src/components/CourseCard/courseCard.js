@@ -27,7 +27,7 @@ const CourseCard = ({
     setModal(false);
   };
   const handleOpen = () => {
-    const [deleteVideo, seek] = deleteVideoCheck(lastPlayed, (batchTiming, _id === batchId && paymentStatus==='Success'));
+    const [deleteVideo, seek] = deleteVideoCheck(lastPlayed, batchTiming, (_id === batchId && paymentStatus==='Success'));
     const timeBlock = !(seek>0 && seek <50*60);
     if (deleteVideo) {
       videoDelete(videos[0]);
@@ -121,7 +121,7 @@ const CourseCard = ({
             )}
             {isRegistered && paymentStatus === "Success" && isBlockedByTime && (
               <>
-                <p>{`You have chosen batch timings which is ${modalTime}`}</p>
+                <p>{`You have chosen batch timings which is ${modalTime} Mon-Thu`}</p>
               </>
             )}
             {isRegistered &&

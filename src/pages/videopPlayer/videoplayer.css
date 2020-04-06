@@ -1,3 +1,12 @@
 .ytp-show-cards-title:hover{
     display: none !important;
 }
+
+.fullscreen-button{
+   width: 200px;
+   border: 0px;
+   border-radius: 3px !important;
+   height: 48px;
+   background-color: #e67300 !important;
+   color:white !important;
+}
