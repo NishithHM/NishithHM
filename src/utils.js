@@ -65,7 +65,7 @@ export const deleteVideoCheck = (lastPlayed, data, match) => {
   courseStart.setMinutes(startMin);
   courseStart.setFullYear(today.getFullYear());
   courseStart.setMonth(today.getMonth());
-  courseStart.setDate(today.getDate()+1);
+  courseStart.setDate(today.getDate());
   courseStart.setSeconds("00");
   courseStart.setMilliseconds("00");
   courseStart = moment(new Date(courseStart));
