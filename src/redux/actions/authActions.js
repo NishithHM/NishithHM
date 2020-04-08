@@ -102,8 +102,8 @@ export const userUpdate = (phone, history) => {
         });
       })
       .catch(e => {
-       history && history.push("/");
-        sessionStorage.clear();
+      //  history && history.push("/");
+      //   sessionStorage.clear();
         dispatch({
           type: API_DONE
         });

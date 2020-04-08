@@ -11,6 +11,7 @@ class VideoPlayer extends Component {
   constructor(props) {
     super(props);
     this.player = "";
+    this.seek= parseInt(sessionStorage.getItem('seek'))
     this.state = {
       isFull: false,
     };
@@ -26,13 +27,13 @@ class VideoPlayer extends Component {
 
   componentDidMount() {
     const { location, history } = this.props;
-    const seek = get(location, "state.seek", 0);
+    const seek =  parseInt(sessionStorage.getItem('seek'));
     const video = get(location, "state.video", sessionStorage.getItem("video"));
     if (!(video || sessionStorage.getItem("video"))) {
       history.push("/");
       sessionStorage.clear();
     }
-    if (seek === 0) {
+    if ( !seek ) {
       history.push("/courses");
     }
   }
@@ -45,7 +46,7 @@ class VideoPlayer extends Component {
       (today.getMonth() + 1) +
       "-" +
       today.getDate();
-    const time = today.getHours() + ":" + today.getMinutes();
+    // const time = today.getHours() + ":" + today.getMinutes();
     const phone = sessionStorage.getItem("phone");
     this.props.dispatch(updatePlayDateAndTime(today, phone));
   };
@@ -56,10 +57,17 @@ class VideoPlayer extends Component {
     dispatch(deleteVideo(video, true, history));
   };
 
+  onSeek=({playedSeconds})=>{
+      if(playedSeconds - this.seek > 3*60){
+        this.seek = playedSeconds;
+        sessionStorage.setItem('seek', this.seek)
+      }
+  }
+
   render() {
     const { location } = this.props;
     const video = get(location, "state.video", sessionStorage.getItem("video"));
-    const seek = get(location, "state.seek", 0);
+    const seek = sessionStorage.getItem("seek");
     return (
       <div>
       <Button
@@ -80,6 +88,7 @@ class VideoPlayer extends Component {
           onReady={() => this.seekTo(seek)}
           onStart={() => this.onStart()}
           onEnded={() => this.onEnd()}
+          onProgress={(e)=>this.onSeek(e)}
           height={window.outerHeight}
           width={window.outerWidth}
         />

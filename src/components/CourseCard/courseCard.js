@@ -42,6 +42,7 @@ const CourseCard = ({
       ) {
         if (videos[0] && seek<50*60) {
           sessionStorage.setItem("video", videos[0]);
+          sessionStorage.setItem("seek", seek);
           history.push({
             pathname: "/videos",
             state: { video: videos[0], seek }
