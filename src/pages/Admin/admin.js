@@ -17,7 +17,7 @@ import {
   getBatchData,
   updateUserPayment
 } from "../../redux/actions";
-import { arrayReformat } from "../../utils";
+import { arrayReformat, getLogs } from "../../utils";
 
 class Admin extends Component {
   componentDidMount() {
@@ -60,6 +60,9 @@ class Admin extends Component {
       loginDetails
     } = this.props;
     const userBatch = arrayReformat(userList, batchData);
+
+   
+    getLogs(userList)
     
     return (
       <div
@@ -103,6 +106,10 @@ class Admin extends Component {
                   {" "}
                   <strong>Approve Payment</strong>
                 </TableCell>
+                <TableCell align="left">
+                  {" "}
+                  <strong>To be played</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -114,7 +121,10 @@ class Admin extends Component {
                   gpayRefId,
                   paymentStatus,
                   batchName,
-                  batchId
+                  batchId,
+                  videos,
+                  lastPlayed,
+
                 } = row;
                 return (
                   <TableRow key={row.name}>
@@ -144,6 +154,9 @@ class Admin extends Component {
                             : "Disapprove"}
                         </Button>
                       )}
+                    </TableCell>
+                    <TableCell align="left">
+                          {paymentStatus==="Success" ? lastPlayed ? `Day ${10 - videos.length+2}` : `Day ${10 - videos.length+1}` : null}
                     </TableCell>
                   </TableRow>
                 );

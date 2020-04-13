@@ -5,7 +5,8 @@ import Fullscreen from "react-full-screen";
 import "./videoplayer.css";
 import { updatePlayDateAndTime, deleteVideo } from "../../redux/actions";
 import { get } from "lodash";
-import { Button } from "@material-ui/core";
+import { Button, LinearProgress } from "@material-ui/core";
+import Vimeo from '@u-wave/react-vimeo';
 
 class VideoPlayer extends Component {
   constructor(props) {
@@ -14,15 +15,12 @@ class VideoPlayer extends Component {
     this.seek= parseInt(sessionStorage.getItem('seek'))
     this.state = {
       isFull: false,
+      loading: true
     };
   }
 
   goFull = () => {
     this.setState({ isFull: true });
-  }
-
-  seekTo = seek => {
-    this.player.seekTo(seek, "seconds");
   };
 
   componentDidMount() {
@@ -39,6 +37,9 @@ class VideoPlayer extends Component {
   }
 
   onStart = () => {
+    this.setState({
+      loading: false,
+    });
     const today = new Date();
     const date =
       today.getFullYear() +
@@ -54,46 +55,55 @@ class VideoPlayer extends Component {
   onEnd = () => {
     const { dispatch, location, history } = this.props;
     const video = get(location, "state.video", sessionStorage.getItem("video"));
-    dispatch(deleteVideo(video, true, history));
+    // dispatch(deleteVideo(video, true, history));
+    history.push('/courses')
   };
 
-  onSeek=({playedSeconds})=>{
-      if(playedSeconds - this.seek > 3*60){
-        this.seek = playedSeconds;
-        sessionStorage.setItem('seek', this.seek)
-      }
-  }
+  onSeek = ({seconds}) => {
+    if (seconds - this.seek > 3 * 60) {
+      this.seek = seconds;
+      sessionStorage.setItem("seek", this.seek);
+    }
+  };
 
   render() {
     const { location } = this.props;
+    const { loading } = this.state;
     const video = get(location, "state.video", sessionStorage.getItem("video"));
-    const seek = sessionStorage.getItem("seek");
+    const seek = parseInt(sessionStorage.getItem("seek"));  
     return (
       <div>
-      <Button
-          className="fullscreen-button"
-          onClick={() => this.goFull()}
-        >
+        <Button className="fullscreen-button" onClick={() => this.goFull()}>
           Go Full Screen
         </Button>
-      <div style={{ pointerEvents: "none" }}>
-      <Fullscreen
-          enabled={this.state.isFull}
-          onChange={isFull => this.setState({isFull})}
-        >
-        <ReactPlayer
-          ref={ref => (this.player = ref)}
-          url={video.trim()}
-          playing
-          onReady={() => this.seekTo(seek)}
-          onStart={() => this.onStart()}
-          onEnded={() => this.onEnd()}
-          onProgress={(e)=>this.onSeek(e)}
-          height={window.outerHeight}
-          width={window.outerWidth}
-        />
-        </Fullscreen>
-      </div>
+        <div style={{ pointerEvents: "none" }}>
+          <Fullscreen
+            enabled={this.state.isFull}
+            onChange={(isFull) => this.setState({ isFull })}
+          >
+            {loading && (
+              <div>
+              <br/>
+                <LinearProgress />
+              <br/>
+              <h3>Loading...</h3>
+              </div>
+            )}
+            {video && <Vimeo
+              video={
+                video.trim()
+              }
+              autoplay
+              start={seek}
+              onPlay={() => this.onStart()}
+              onEnd={() => this.onEnd()}
+              onTimeUpdate={(e) => this.onSeek(e)}
+              height={window.outerHeight}
+              width={window.outerWidth}
+              controls={false}
+            />}
+          </Fullscreen>
+        </div>
       </div>
     );
   }

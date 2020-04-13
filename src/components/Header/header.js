@@ -22,6 +22,12 @@ const Header = props => (
         >
           Log Out
         </Button>
+        {/* <Button
+          className="login-button" style={{marginTop:'10px', height:"60px"}}
+          onClick={() => props.history.push("/videos")}
+        >
+          Go to videos
+        </Button> */}
       </div>
     ) : null}
   </div>

@@ -104,3 +104,23 @@ export const deleteVideoCheck = (lastPlayed, data, match) => {
     }
   }
 };
+
+export const getLogs =(userList)=>{
+  const videoLength = 10;
+  for( let i = videoLength; i >=0; i--){
+    if(i!==0){
+      const filter  = userList.filter((user) => (user.videos.length === i && !user.lastPlayed)|| user.videos.length===i+1 && user.lastPlayed)
+      console.log("day "+ (videoLength - i+1))
+      console.log(filter.length)
+      console.table(filter,["name", "phone"])
+    }
+    else{
+      const completed = userList.filter(user=> user.watchLog.length>0 && user.videos.length === 0)
+      console.log("Completed")
+      console.log(completed.length)
+      console.table(completed,["name", "phone"])
+    }
+    
+  }
+
+}
