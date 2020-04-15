@@ -55,8 +55,8 @@ class VideoPlayer extends Component {
   onEnd = () => {
     const { dispatch, location, history } = this.props;
     const video = get(location, "state.video", sessionStorage.getItem("video"));
-    // dispatch(deleteVideo(video, true, history));
-    history.push('/courses')
+    dispatch(deleteVideo(video, true, history));
+    // history.push('/courses')
   };
 
   onSeek = ({seconds}) => {
