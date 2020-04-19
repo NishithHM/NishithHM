@@ -156,7 +156,7 @@ class Admin extends Component {
                       )}
                     </TableCell>
                     <TableCell align="left">
-                          {paymentStatus==="Success" ? lastPlayed ? `Day ${10 - videos.length+2}` : `Day ${10 - videos.length+1}` : null}
+                          {paymentStatus==="Success" ? lastPlayed ? `Day ${14 - videos.length+2}` : `Day ${14 - videos.length+1}` : null}
                     </TableCell>
                   </TableRow>
                 );

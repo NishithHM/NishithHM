@@ -106,7 +106,7 @@ export const deleteVideoCheck = (lastPlayed, data, match) => {
 };
 
 export const getLogs =(userList)=>{
-  const videoLength = 10;
+  const videoLength = 14;
   for( let i = videoLength; i >=0; i--){
     if(i!==0){
       const filter  = userList.filter((user) => (user.videos.length === i && !user.lastPlayed)|| user.videos.length===i+1 && user.lastPlayed)
@@ -122,5 +122,12 @@ export const getLogs =(userList)=>{
     }
     
   }
+  // const filter = userList.filter(user => user.lastPlayed)
+  // console.log(filter.length)
+  // filter.map(user=>{
+  //   console.log(user.name)
+  //   console.log(user.videos.length)
+  //   console.log(user.lastPlayed)
+  // })
 
 }
