@@ -110,6 +110,10 @@ class Admin extends Component {
                   {" "}
                   <strong>To be played</strong>
                 </TableCell>
+                <TableCell align="left">
+                  {" "}
+                  <strong>Renewals</strong>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -156,7 +160,19 @@ class Admin extends Component {
                       )}
                     </TableCell>
                     <TableCell align="left">
-                          {paymentStatus==="Success" ? lastPlayed ? `Day ${14 - videos.length+2}` : `Day ${14 - videos.length+1}` : null}
+                          {paymentStatus==="Success" ? lastPlayed ? `Day ${18 - videos.length+2}` : `Day ${18 - videos.length+1}` : null}
+                    </TableCell>
+                    <TableCell align="left">
+                          {paymentStatus==="Success" && videos.length===0 && (
+                            <Button
+                            className="login-button"
+                            onClick={() =>
+                              this.updatePayment(phone, batchId, "true")
+                            }>
+                            Renew
+                             </Button> 
+                          )
+                            }
                     </TableCell>
                   </TableRow>
                 );

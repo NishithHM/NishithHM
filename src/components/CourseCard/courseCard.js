@@ -130,7 +130,7 @@ const CourseCard = ({
               !isBlockedByTime &&
               videos[0] === undefined && (
                 <>
-                  <p>You have completed this course</p>
+                  <p>You have completed this course, to renew please contact 8147451256 </p>
                 </>
               )}
           </div>

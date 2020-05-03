@@ -17,7 +17,7 @@ class Courses extends Component {
   };
 
   videoDelete=(video)=>{
-    this.props.dispatch(deleteVideo(video, true, this.props.history))
+    // this.props.dispatch(deleteVideo(video, true, this.props.history))
   }
   render() {
     const { loading, batchData, loginDetails } = this.props;
