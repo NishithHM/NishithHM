@@ -69,8 +69,9 @@ class VideoPlayer extends Component {
   render() {
     const { location } = this.props;
     const { loading } = this.state;
-    const video = get(location, "state.video", sessionStorage.getItem("video"));
+    let video = get(location, "state.video", sessionStorage.getItem("video"));
     const seek = parseInt(sessionStorage.getItem("seek"));  
+    video = video.includes('https://vimeo.com/414454547') ? "https://vimeo.com/414454547/c5e4d84bb1" : video
     return (
       <div>
         <Button className="fullscreen-button" onClick={() => this.goFull()}>
