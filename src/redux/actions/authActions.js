@@ -125,9 +125,9 @@ export const updatePlayDateAndTime = (lastPlayed, phone) => {
 export const deleteVideo = (video, completed, history) => {
     const phone = sessionStorage.getItem('phone')
   return dispatch => {
-    putService("/user/video", { video, completed }).then(res => {
-        history.push('/courses')
+    // putService("/user/video", { video, completed }).then(res => {
+        // history.push('/courses')
         dispatch(updatePlayDateAndTime("",phone))
-    });
+    // });
   };
 };

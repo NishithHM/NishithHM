@@ -62,7 +62,9 @@ class Admin extends Component {
     const userBatch = arrayReformat(userList, batchData);
 
    
-    getLogs(userList)
+    // getLogs(userList)
+    const lastPlayed = userList.filter(user=> user.lastPlayed)
+    console.log(lastPlayed)
     
     return (
       <div
